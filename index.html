@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Forecasting — Project Results</title>
+<style>
+  :root {
+    --bg: #0f1117; --card: #171923; --text: #e6e6e6; --muted: #9aa1b1;
+    --accent: #4f8cff; --border: #262a36;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  header {
+    padding: 60px 20px 40px; text-align: center;
+    background: linear-gradient(180deg, #171b28 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 2.2rem; margin: 0 0 10px; }
+  header p { color: var(--muted); max-width: 640px; margin: 0 auto; }
+  .container { max-width: 980px; margin: 0 auto; padding: 40px 20px; }
+  section { margin-bottom: 56px; }
+  h2 { font-size: 1.4rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; }
+  h3 { color: var(--muted); font-size: 1rem; margin: 28px 0 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px; text-align: center;
+  }
+  .card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .card .label { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+  img { width: 100%; border-radius: 10px; border: 1px solid var(--border); display: block; background: #fff; }
+  .caption { color: var(--muted); font-size: 0.85rem; margin-top: 8px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; margin-bottom: 8px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+  tr.best td { color: var(--accent); font-weight: 600; }
+  footer { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+  a { color: var(--accent); }
+  .badge {
+    display: inline-block; background: rgba(79,140,255,0.15); color: var(--accent);
+    padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-top: 10px;
+  }
+  .note { color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Sales Forecasting Project</h1>
+  <p>Predicting <strong>Units Sold</strong> from pricing, promotions, stock, and store/product context —
+  EDA, feature engineering, and a 4-model comparison (Linear Regression, Random Forest, XGBoost, Gradient Boosting).</p>
+  <div class="badge">Best model (with engineered features): XGBoost — R² 0.9715</div>
+</header>
+
+<div class="container">
+
+  <section>
+    <h2>Dataset Overview</h2>
+    <div class="grid">
+      <div class="card"><div class="value">3,000</div><div class="label">Transactions</div></div>
+      <div class="card"><div class="value">27</div><div class="label">Original Columns</div></div>
+      <div class="card"><div class="value">8 / 4</div><div class="label">Products / Stores</div></div>
+      <div class="card"><div class="value">2023–2026</div><div class="label">Date Range</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exploratory Data Analysis</h2>
+    <div class="grid">
+      <div>
+        <img src="assets/dist_units_sold.png" alt="Distribution of Units Sold">
+        <div class="caption">Distribution of Units_Sold</div>
+      </div>
+      <div>
+        <img src="assets/trend_monthly.png" alt="Monthly sales trend">
+        <div class="caption">Total units sold, monthly trend</div>
+      </div>
+    </div>
+    <br>
+    <img src="assets/corr_heatmap.png" alt="Correlation heatmap">
+    <div class="caption">Correlation heatmap of numeric features</div>
+  </section>
+
+  <section>
+    <h2>Model Comparison</h2>
+
+    <h3>Before feature engineering</h3>
+    <table>
+      <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th></tr></thead>
+      <tbody>
+        <tr class="best"><td>Random Forest</td><td>3.07</td><td>4.30</td><td>0.9782</td></tr>
+        <tr><td>XGBoost</td><td>3.12</td><td>4.32</td><td>0.9780</td></tr>
+        <tr><td>Gradient Boosting</td><td>4.44</td><td>6.04</td><td>0.9571</td></tr>
+        <tr><td>Linear Regression</td><td>9.39</td><td>12.09</td><td>0.8280</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Random Forest and XGBoost are essentially tied at this stage (R² within 0.0002).</div>
+
+    <h3>After feature engineering</h3>
+    <table>
+      <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th></tr></thead>
+      <tbody>
+        <tr class="best"><td>XGBoost</td><td>3.70</td><td>4.97</td><td>0.9715</td></tr>
+        <tr><td>Random Forest</td><td>3.77</td><td>5.17</td><td>0.9690</td></tr>
+        <tr><td>Gradient Boosting</td><td>4.72</td><td>6.28</td><td>0.9544</td></tr>
+        <tr><td>Linear Regression</td><td>8.04</td><td>10.09</td><td>0.8823</td></tr>
+      </tbody>
+    </table>
+    <div class="note">With the engineered features (interaction terms, cyclical dates, lag/rolling stats), XGBoost pulls ahead as the final selected model.</div>
+
+    <br>
+    <div class="grid">
+      <div>
+        <img src="assets/model_comparison_final.png" alt="Model R2 comparison, final feature set">
+        <div class="caption">R² by model — final feature set</div>
+      </div>
+      <div>
+        <img src="assets/pred_vs_actual_final.png" alt="XGBoost predicted vs actual">
+        <div class="caption">XGBoost — Predicted vs Actual</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Feature Importance (XGBoost, final feature set)</h2>
+    <img src="assets/feature_importance_final.png" alt="Top 15 feature importances">
+    <div class="caption">The <code>InStock_and_Promo</code> interaction (stock availability × promotion) dominates,
+    followed by <code>Stock_Availability</code> and <code>Promotion_Flag</code> alone.</div>
+  </section>
+
+  <section>
+    <h2>Hyperparameter Tuning</h2>
+    <p>
+      <code>RandomizedSearchCV</code> over XGBoost found best params
+      <code>n_estimators=300, max_depth=9, learning_rate=0.01, subsample=0.8</code>,
+      giving MAE 4.09 / RMSE 5.40 / R² 0.9663 on the held-out test set — close to, but slightly below,
+      the untuned XGBoost run above (0.9715). This is a normal outcome of cross-validated search:
+      the tuned params optimize average CV performance across folds, not this single train/test split.
+    </p>
+  </section>
+
+  <section>
+    <h2>Project Files</h2>
+    <p>
+      Full code, the trained model, and the notebook are in the repo:<br>
+      📓 <a href="../salesforecasting_model.ipynb">salesforecasting_model.ipynb</a> — run end-to-end in Colab or Jupyter<br>
+      📦 <code>sales_forecast_model.pkl</code> — final tuned XGBoost model (generated when you run the notebook)<br>
+      📊 <code>sales_forecast_predictions.xlsx</code> — test-set predictions with error column (generated when you run the notebook)
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  Built with pandas, scikit-learn, XGBoost, and matplotlib · Static report generated for GitHub Pages
+</footer>
+
+</body>
+</html>
