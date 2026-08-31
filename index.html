@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Forecasting — Project Results</title>
+<style>
+  :root {
+    --bg: #0f1117; --card: #171923; --text: #e6e6e6; --muted: #9aa1b1;
+    --accent: #4f8cff; --border: #262a36;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
+  header {
+    padding: 60px 20px 40px; text-align: center;
+    background: linear-gradient(180deg, #171b28 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 2.2rem; margin: 0 0 10px; }
+  header p { color: var(--muted); max-width: 640px; margin: 0 auto; }
+  .container { max-width: 980px; margin: 0 auto; padding: 40px 20px; }
+  section { margin-bottom: 56px; }
+  h2 { font-size: 1.4rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px; text-align: center;
+  }
+  .card .value { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+  .card .label { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+  img { width: 100%; border-radius: 10px; border: 1px solid var(--border); display: block; }
+  .caption { color: var(--muted); font-size: 0.85rem; margin-top: 8px; text-align: center; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; }
+  tr.best td { color: var(--accent); font-weight: 600; }
+  footer { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--border); }
+  a { color: var(--accent); }
+  .badge {
+    display: inline-block; background: rgba(79,140,255,0.15); color: var(--accent);
+    padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Sales Forecasting Project</h1>
+  <p>Predicting <strong>Units Sold</strong> from pricing, promotions, stock, and store/product context —
+  EDA, feature engineering, and a 3-model comparison (Linear Regression, Random Forest, Gradient Boosting).</p>
+  <div class="badge">Best model: Random Forest — R² 0.969</div>
+</header>
+
+<div class="container">
+
+  <section>
+    <h2>Dataset Overview</h2>
+    <div class="grid">
+      <div class="card"><div class="value">3,000</div><div class="label">Transactions</div></div>
+      <div class="card"><div class="value">27</div><div class="label">Original Columns</div></div>
+      <div class="card"><div class="value">8 / 4</div><div class="label">Products / Stores</div></div>
+      <div class="card"><div class="value">2023–2026</div><div class="label">Date Range</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Exploratory Data Analysis</h2>
+    <div class="grid">
+      <div>
+        <img src="assets/dist_units_sold.png" alt="Distribution of Units Sold">
+        <div class="caption">Distribution of Units_Sold</div>
+      </div>
+      <div>
+        <img src="assets/trend_monthly.png" alt="Monthly sales trend">
+        <div class="caption">Total units sold, monthly trend</div>
+      </div>
+    </div>
+    <br>
+    <img src="assets/corr_heatmap.png" alt="Correlation heatmap">
+    <div class="caption">Correlation heatmap of numeric features</div>
+  </section>
+
+  <section>
+    <h2>Model Comparison</h2>
+    <table>
+      <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R²</th></tr></thead>
+      <tbody>
+        <tr class="best"><td>Random Forest</td><td>3.77</td><td>5.18</td><td>0.969</td></tr>
+        <tr><td>Gradient Boosting</td><td>4.71</td><td>6.26</td><td>0.955</td></tr>
+        <tr><td>Linear Regression</td><td>8.04</td><td>10.09</td><td>0.882</td></tr>
+      </tbody>
+    </table>
+    <br>
+    <div class="grid">
+      <div>
+        <img src="assets/model_comparison.png" alt="Model R2 comparison">
+        <div class="caption">R² by model</div>
+      </div>
+      <div>
+        <img src="assets/pred_vs_actual.png" alt="Predicted vs actual">
+        <div class="caption">Random Forest — Predicted vs Actual</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Feature Importance</h2>
+    <img src="assets/feature_importance.png" alt="Top 15 feature importances">
+    <div class="caption">Stock availability × promotion interaction and discounted price are the strongest drivers of Units_Sold.</div>
+  </section>
+
+  <section>
+    <h2>Project Files</h2>
+    <p>
+      Full code, the trained model, and the notebook are in the repo:<br>
+      📓 <a href="../Sales_Forecasting.ipynb">Sales_Forecasting.ipynb</a> — run end-to-end in Colab or Jupyter<br>
+      📊 <a href="../results_table.csv">results_table.csv</a> — model comparison metrics<br>
+      📈 <a href="../feature_importance.csv">feature_importance.csv</a> — top feature importances
+    </p>
+  </section>
+
+</div>
+
+<footer>
+  Built with pandas, scikit-learn, and matplotlib · Static report generated for GitHub Pages
+</footer>
+
+</body>
+</html>
